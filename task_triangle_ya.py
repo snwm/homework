@@ -1,5 +1,12 @@
-﻿peak1 = int(input())
-peak2 = int(input())
+﻿A = (int(input()), int(input()))
+B = (int(input()), int(input()))
+C = (int(input()), int(input()))
 
-if(peak1 * peak2 % 2 == 0):
-    print("yes");
+AB = ((A[0]-B[0])**2)+((A[1]-B[1])**2)
+AC = ((A[0]-C[0])**2)+((A[1]-C[1])**2)
+BC = ((B[0]-C[0])**2)+((B[1]-C[1])**2)
+
+if(AB == AC or AB == BC or AC == BC):
+    print("yes")
+else:
+    print("no")
