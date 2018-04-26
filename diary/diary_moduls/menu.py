@@ -24,11 +24,11 @@ def print_menu():
 def start_func(f):
     functions = {
         1: print_task,
-		2: add_task,
-		3: edit_task,
-		4: end_task,
-		5: again_task,
-		6: exit_task,
+        2: add_task,
+        3: edit_task,
+        4: end_task,
+        5: again_task,
+        6: exit_task,
 	}
 	
     return functions[f]()
