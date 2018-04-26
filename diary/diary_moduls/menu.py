@@ -1,6 +1,7 @@
 ﻿def run():
     print(print_menu())
     try:
+        print("Введите число: ")
         choice = int(input())
         if(choice == 6): return
         start_func(choice)
@@ -12,6 +13,8 @@
 	
 def print_menu():
     menu = '''
+Ежедневник. Выберите действие:
+
 1: Вывести список задач
 2: Добавить задачу
 3: Отредактировать задачу
