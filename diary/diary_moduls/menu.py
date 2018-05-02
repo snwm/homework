@@ -55,11 +55,20 @@ def print_task(num=0):
         print('\n'+req_db.list_tasks(conn, num))
 	
     
-def add_task():
-    name = input('\nВведите название задачи: ')
-    text = input('\nВведите текст задачи: ')
-    time = input('\nВведите запланированное время: ')
+def valid_input(inp):
+    enter_text = input(inp)
+    if not enter_text: 
+        while not enter_text:
+            enter_text = input(inp)
+            
+    return enter_text
     
+    
+def add_task():
+    name = valid_input("\nВведите название задачи: ")
+    text = valid_input("\nВведите текст задачи: ")
+    time = valid_input("\nВведите запланированное время: ")
+        
     with get_connection() as conn:
         req_db.add_task(conn, name, text, time)
         
@@ -67,7 +76,7 @@ def add_task():
 	
     
 def edit_task():
-    num_task = input('\nВведите номер задачи: ')
+    num_task = valid_input('\nВведите номер задачи: ')
     with get_connection() as conn:
         result_edit_menu = req_db.menu_edit(conn, num_task)
         
@@ -76,8 +85,12 @@ def edit_task():
             
         print(result_edit_menu)
     
-    num_edit = input("\nВыберите, что хотите поменять: ")
-    edit_text = input("\nВведите новые данные: ")
+    num_edit = valid_input("\nВыберите, что хотите поменять: ")
+    
+    if not req_db.colums_db(num_edit):
+        return print("\nВы выбрали несуществующие даннные")
+        
+    edit_text = valid_input("\nВведите новые данные: ")
     
     with get_connection() as conn:
         req_db.update_task(conn, num_edit, edit_text, num_task)
@@ -86,7 +99,7 @@ def edit_task():
     
     
 def end_task(choice=0):
-    num_task = input('\nВведите номер задачи: ')
+    num_task = valid_input('\nВведите номер задачи: ')
     with get_connection() as conn:
         if not req_db.menu_edit(conn, num_task):
             return print("\nТакой задачи в базе не найдено")
@@ -101,7 +114,7 @@ def again_task():
     
     
 def search_task(choice=0):
-    text_search = input('\nВведите фразу для поиска: ')
+    text_search = valid_input('\nВведите фразу для поиска: ')
     with get_connection() as conn:
         print('\n'+req_db.search_task(conn, choice, text_search))
 	
@@ -117,5 +130,5 @@ def run():
     print(print_menu())
     
     while 1:
-        choice = input('\nВведите команду: ')
+        choice = valid_input('\nВведите команду: ')
         start_func(choice)

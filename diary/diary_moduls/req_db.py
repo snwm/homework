@@ -94,8 +94,6 @@ def colums_db(a):
     
 
 def update_task(conn, num_column, new_data, id):
-    if not colums_db(num_column):
-        return print("\n !!!!Вы выбрали несуществующие даннные!!!!")
     conn.execute(sql_update_task(colums_db(num_column)), (new_data, id))
     
 
