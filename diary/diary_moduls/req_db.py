@@ -1,5 +1,6 @@
 ﻿import os.path as Path
 import sqlite3
+from diary_moduls import convert_date
 
 SQL_INSERT_TASK = 'INSERT INTO diary (name, text, deadline, status) VALUES (?, ?, ?, ?)'
 SQL_SELECT_ALL = '''
@@ -10,6 +11,7 @@ SQL_SELECT_ALL = '''
     '''
 SQL_SELECT_TASK_BY_ID = SQL_SELECT_ALL + ' WHERE id=?'
 SQL_SELECT_TASK_BY_STATUS = SQL_SELECT_ALL + ' WHERE status LIKE ? ORDER BY id DESC'
+SQL_SELECT_SEARCH_TASKS_BY_DATE = SQL_SELECT_ALL + ' WHERE deadline >= ? and deadline <= ? ORDER BY id DESC'
 
 
 def sql_search(column):
@@ -51,7 +53,7 @@ def add_task(conn, name, text, time):
 def output_list_tasks(result):
     show_result = "";
     for i, value in enumerate(result):
-        show_result += '{} | {} | {} | {} | {}'.format(value[0], value[1], value[2], value[3], value[4]) + '\n'
+        show_result += '{} | {} | {} | {} | {}'.format(value[0], value[1], value[2], convert_date.convert_to_date_format(value[3]), value[4]) + '\n'
     
     if not show_result: 
         return "Такой задачи в базе не найдено"
@@ -77,7 +79,7 @@ def menu_edit(conn, id):
     show_result = '''
 1. '''+ result[1] +'''
 2. '''+ result[2] + '''
-3. '''+ result[3] + '''
+3. '''+ convert_date.convert_to_date_format(result[3]) + '''
     '''
     
     return show_result
@@ -105,6 +107,13 @@ def end_task(conn, id_task, choice):
 def search_task(conn, choice, search_text):
     name_column = {0:'name', '6.1':'text'}
     cursor = conn.execute(SQL_SELECT_ALL+sql_search(name_column.get(choice)), ('%'+search_text+'%', ))
+    result = cursor.fetchall()
+    
+    return output_list_tasks(result)
+    
+    
+def search_task_by_date(conn, start, over):
+    cursor = conn.execute(SQL_SELECT_SEARCH_TASKS_BY_DATE, (start, over))
     result = cursor.fetchall()
     
     return output_list_tasks(result)
