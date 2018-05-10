@@ -1,3 +1,5 @@
+NUMBERS = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+
 def dec2bin(number):
     return univers_conv_from_dec(number, 2)
 
@@ -27,7 +29,7 @@ def univers_conv_from_dec(number, sis):
     while number > 0:
         x = number % sis
         number /= sis
-        list.insert(0, str(x))
+        list.insert(0, str(NUMBERS[x]))
         
         number = int(number)
         
@@ -38,7 +40,7 @@ def univers_conv_to_dec(number, sis):
     lim = len(number)
     result = 0
     for k, v in enumerate(range(lim, 0, -1)):
-        num = ord(number[k]) if number[k].isalpha() else number[k]
+        num = NUMBERS.index(number[k].upper())
         result += int(num) * sis**(v-1)
         
     return result
