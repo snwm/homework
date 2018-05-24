@@ -59,8 +59,7 @@ class ParamHandler(metaclass=ABCMeta):
         
         
 class ParamHandlerException(Exception):
-    def __init__(self, value):
-        ParamHandlerException.txt = value
+    pass
         
         
 class JsonParamHandler(ParamHandler):
