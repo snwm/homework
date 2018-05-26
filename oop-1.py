@@ -66,7 +66,6 @@ class JsonParamHandler(ParamHandler):
     def read(self):
         with open(self.source) as f:
             readed_data = json.load(f)
-            return '{}'.format(readed_data)
         
         
     def write(self):
@@ -78,7 +77,6 @@ class PickleParamHandler(ParamHandler):
     def read(self):
         with open(self.source, 'rb') as f:
             readed_data = pickle.load(f)
-            return '{}'.format(readed_data)
         
         
     def write(self):
