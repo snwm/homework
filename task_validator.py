@@ -70,7 +70,8 @@ class DateTimeValidator(Validator):
         
         sum = 0
         for v in templates:
-            sum += func_tpl(value, v)
+            if len(value) == len(v):
+                sum += func_tpl(value, v)
         
         if sum is 0:
             return False
@@ -86,4 +87,4 @@ validator = Validator.get_instance('email')
 print(validator.validate('info@itmo-it.org'))
 
 validator = Validator.get_instance('datetime')
-print(validator.validate('2017-09-01'))
+print(validator.validate('2017-09-01 12:00:00'))
