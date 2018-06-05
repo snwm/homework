@@ -10,21 +10,22 @@ class Validator(metaclass=ABCMeta):
         
     @classmethod   
     def get_instance(cls, name):
-        return cls.types.get(name)
+        klass = cls.types.get(name)
+        if not klass:
+             raise ValidatorException(
+                'Validator with name "{}" not found'.format(name)
+            )
+        return klass
         
     
     @classmethod
     def add_type(cls, name, klass):
-        if not issubclass(klass, Validator):
-            raise ValidatorException(
-                'Validator with name "{}" not found'.format(klass)
-            )
-            
         if not name:
-            raise ValidatorException(
-                'Validator must have a name!'
-            )
+            raise ValidatorException('Validator must have a name!')
             
+        if not issubclass(klass, Validator):
+            raise ValidatorException('Class "{}" is not Validator!'.format(klass))
+
         cls.types[name] = klass
     
 
@@ -65,6 +66,7 @@ class DateTimeValidator(Validator):
             "#/##/####",
             "##/##/####",
             "#/#/#### ##:##",
+            "##/##/#### ##:##",
             "#/#/#### ##:##:##"
         ]
         
@@ -78,13 +80,14 @@ class DateTimeValidator(Validator):
         
         return True
         
-    
-    
+        
 Validator.add_type("email", EMailValidator)
 Validator.add_type("datetime", DateTimeValidator)
+    
+if __name__ == '__main__':
+    
+    validator = Validator.get_instance('email')
+    print(validator.validate('info@itmo-it.org'))
 
-validator = Validator.get_instance('email')
-print(validator.validate('info@itmo-it.org'))
-
-validator = Validator.get_instance('datetime')
-print(validator.validate('2017-09-01 12:00:00'))
+    validator = Validator.get_instance('datetime')
+    print(validator.validate('01/09/2017 12:00'))
